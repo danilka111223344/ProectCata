@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userdao;
     public UserServiceImpl() {
 
-        this.userdao = new UserDaoJDBCImpl();
+        this.userdao = new UserDaoHibernateImpl();
     }
     public void createUsersTable() throws SQLException {
         userdao.createUsersTable();
