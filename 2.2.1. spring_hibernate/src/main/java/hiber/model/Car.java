@@ -5,14 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cars")
 public class Car {
-//    @Override
-//    public String toString() {
-//        return "Car{" +
-//                "id=" + id +
-//                ", model='" + model + '\'' +
-//                ", series=" + series +
-//                '}';
-//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +12,7 @@ public class Car {
 
     @Column(name = "model")
     private String model;
+
     @Column(name = "series")
     private int series;
     public Car() {

@@ -45,7 +45,6 @@ public class MainApp {
           System.out.println("Владелец BMW: " + vladelecBMW.getFirstName() + " " + vladelecBMW.getLastName() + " " + vladelecBMW.getEmail());
       }
 
-
       List<User> users = userService.listUsers();
       for (User user : users) {
          System.out.println("Id = "+user.getId());
