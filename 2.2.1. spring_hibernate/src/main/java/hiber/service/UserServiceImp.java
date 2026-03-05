@@ -30,6 +30,7 @@ public class UserServiceImp implements UserService {
    public void add(Car car) { userDao.add(car);}
 
    @Transactional
+   @Override
    public User getUserCar(String model, int series) {
         return userDao.getUserCar(model, series);
    }

@@ -5,20 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-    @Override
-    public String toString() {
-        return "User{" +
-                "car=" + car +
-                ", id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    @OneToOne
-    @JoinColumn (name = "carId")
-    private Car car;
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +18,10 @@ public class User {
 
    @Column(name = "email")
    private String email;
+
+   @OneToOne
+   @JoinColumn (name = "carId")
+   private Car car;
 
    public User() {}
    
@@ -80,4 +70,15 @@ public class User {
    public void setCar(Car car) {
         this.car = car;
    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "car=" + car +
+                ", id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
