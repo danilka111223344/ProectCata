@@ -1,14 +1,15 @@
-package web.Model;
+package web.model;
 
 public class Car {
+
     private String model;
     private int series;
-    private String color;
+    private Color color;
 
     public Car() {
     }
 
-    public Car(String model, int series, String color) {
+    public Car(String model, int series, Color color) {
         this.model = model;
         this.series = series;
         this.color = color;
@@ -22,7 +23,7 @@ public class Car {
         return series;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
@@ -34,7 +35,7 @@ public class Car {
         this.series = series;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 }
