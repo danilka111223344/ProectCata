@@ -82,7 +82,7 @@ public class AdminController {
                              @RequestParam(value = "rolename", required = false) List<String> names,
                              @ModelAttribute("user") User user) {
         Set<Role> roles = new HashSet<>();
-        if (roles != null) {
+        if (names != null) {
             for (String name : names) {
                 Role role = roleService.findByName(name);
                 if (role != null) {
