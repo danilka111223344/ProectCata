@@ -54,6 +54,31 @@
         }
     </style>
 
+    <style>
+        .btn-danger:active {
+            border-color: #ff3333;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+    </style>
+
+    <style>
+        .special-btn:active {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+
+    <style>
+        .special-close-btn:active {
+            border-color: #6c757d;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25);
+        }
+    </style>
+
+
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark">
@@ -138,7 +163,7 @@
                 </span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-info text-white"
+                        <button type="button" class="btn btn-info text-white special-btn"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editModal"
                                 th:data-id="${user.id}"
@@ -221,8 +246,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-secondary special-close-btn " data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary special-btn">Edit</button>
                         </div>
                     </form>
                 </div>
@@ -276,7 +301,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary special-close-btn" data-bs-dismiss="modal">Close</button>
                 <form th:method="POST" th:action="@{/admin/delete}">
                     <input type="hidden" name="id" id="deleteUserIdInput">
                     <button type="submit" class="btn btn-danger">Delete</button>
