@@ -6,6 +6,7 @@
     <title>Title</title>
 </head>
 <body>
+<div th:if="${errorMessage}" class="global-error" th:text="${errorMessage}"></div>
 <form th:method="POST" th:action="@{/admin/new}" th:object="${newuser}">
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name">

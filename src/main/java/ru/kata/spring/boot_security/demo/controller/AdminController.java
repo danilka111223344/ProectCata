@@ -53,7 +53,21 @@ public class AdminController {
 
     @PostMapping("/new")
     public String createUser(@ModelAttribute("user") User user,
-                             @RequestParam(value = "rolename", required = false) List<String> names) {
+                             @RequestParam(value = "rolename", required = false) List<String> names,
+                             ModelMap model) {
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            model.addAttribute("errorMessage", "Username is required!");
+            model.addAttribute("allRoles", roleService.findAll());
+            model.addAttribute("newuser", user);
+            return "admin/new";
+        }
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            model.addAttribute("errorMessage", "Password is required!");
+            model.addAttribute("allRoles", roleService.findAll());
+            model.addAttribute("newuser", user);
+            return "admin/new";
+        }
+
         Set<Role> roles = new HashSet<>();
         if (names != null) {
             for (String name : names) {
