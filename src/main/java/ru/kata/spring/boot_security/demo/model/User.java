@@ -30,16 +30,10 @@ public class User implements UserDetails {
     @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "age")
     private int age;
 
-    @Column(name = "phonenumber")
-    private String phonenumber;
-
-    @Column(name = "username")
+    @Column(name = "email")
     private String username;
 
     @Column(name = "password")
@@ -47,13 +41,11 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String name, String lastName, String email, int age,
-                String phonenumber, Set<Role> roles, String username, String password) {
+    public User(String name, String lastName, int age,
+                Set<Role> roles, String username, String password) {
         this.name = name;
         this.lastName = lastName;
-        this.email = email;
         this.age = age;
-        this.phonenumber = phonenumber;
         this.roles = roles != null ? roles : new HashSet<>();
         this.username = username;
         this.password = password;
@@ -83,28 +75,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
     }
 
     public Set<Role> getRoles() {

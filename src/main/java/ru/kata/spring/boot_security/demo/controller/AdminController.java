@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,12 @@ public class AdminController {
     public String showUsers(ModelMap model) {
         List<User> users = userService.listUsers();
         model.addAttribute("requestusers", users);
+        model.addAttribute("changeuser", new User());
+        model.addAttribute("allRoles", roleService.findAll());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+        model.addAttribute("currentUser", currentUser);
         return "admin";
     }
 
@@ -42,6 +50,10 @@ public class AdminController {
     public String newUSer(ModelMap model) {
         model.addAttribute("newuser", new User());
         model.addAttribute("allRoles", roleService.findAll());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+        model.addAttribute("user", currentUser);
         return "admin/new";
     }
 
@@ -64,6 +76,11 @@ public class AdminController {
                     roles.add(role);
                 }
             }
+        } else {
+            Role defaultrole = roleService.findByName("ROLE_USER");
+            if (defaultrole != null) {
+                roles.add(defaultrole);
+            }
         }
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -80,9 +97,9 @@ public class AdminController {
     @PostMapping("/change")
     public String changeUser(@RequestParam("id") Long id,
                              @RequestParam(value = "rolename", required = false) List<String> names,
-                             @ModelAttribute("user") User user) {
+                             @ModelAttribute("changeuser") User user) {
         Set<Role> roles = new HashSet<>();
-        if (roles != null) {
+        if (names != null) {
             for (String name : names) {
                 Role role = roleService.findByName(name);
                 if (role != null) {

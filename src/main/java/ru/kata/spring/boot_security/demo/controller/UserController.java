@@ -11,6 +11,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.List;
+
 
 @Controller
 public class UserController {
@@ -24,9 +26,12 @@ public class UserController {
     @GetMapping("/user")
     public String showUsers(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        User user = userService.findByUsername(username);
-        model.addAttribute("user", user);
+        User currentUser = (User) auth.getPrincipal();
+
+        model.addAttribute("user", currentUser);
+        boolean isAdmin = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+        model.addAttribute("isAdmin", isAdmin);
         return "user";
     }
 
