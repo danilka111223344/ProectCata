@@ -23,12 +23,10 @@ public class AdminController {
 
     private UserService userService;
     private RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AdminController(PasswordEncoder passwordEncoder,
-                           RoleService roleService,
+
+    public AdminController(RoleService roleService,
                            UserService userService) {
-        this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.userService = userService;
     }
@@ -83,7 +81,6 @@ public class AdminController {
             }
         }
         user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.add(user);
         return "redirect:/admin";
     }
@@ -113,7 +110,6 @@ public class AdminController {
             }
         }
         user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.update(user);
         return "redirect:/admin";
     }
