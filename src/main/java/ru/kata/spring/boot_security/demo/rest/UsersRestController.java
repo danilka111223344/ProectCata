@@ -60,22 +60,20 @@ public class UsersRestController {
         authUser.setLastName(user.getLastName());
         authUser.setAge(user.getAge());
         authUser.setUsername(user.getUsername());
-        authUser.setPassword(user.getPassword());
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            authUser.setPassword(user.getPassword());
+        }
         Set<Role> roles = new HashSet<>();
-        if (user.getRoles() != null) {
+        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
             for (Role role : user.getRoles()) {
                 Role existRole = roleService.findByName(role.getName());
                 if (existRole != null) {
                     roles.add(existRole);
                 }
             }
-        } else {
-            Role defaultrole = roleService.findByName("ROLE_USER");
-            if (defaultrole != null) {
-                roles.add(defaultrole);
-            }
+            authUser.setRoles(roles);
         }
-        authUser.setRoles(roles);
+
         userService.update(authUser);
         return authUser;
     }
