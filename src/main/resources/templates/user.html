@@ -69,24 +69,60 @@
                 <th scope="col" style="width: 15%">Role</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:classappend="'table-secondary'" class="border-top">
-                <td th:text="${user.id}"/>
-                <td th:text="${user.name}"/>
-                <td th:text="${user.lastName}"/>
-                <td th:text="${user.age}"/>
-                <td th:text="${user.username}"/>
-                <td>
-                <span th:each="role, iterStat : ${user.roles}">
-                <span th:text="${role.name.replace('ROLE_','')}"></span>
-                <span th:if="${!iterStat.last}">, </span>
-                </span>
-                </td>
+            <tbody id="userBody">
 
             </tbody>
         </table>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+
+   let allRoles = [];
+
+   function loadRoles() {
+       fetch('/api/roles')
+           .then(response => response.json())
+           .then(roles => {
+               allRoles = roles;
+               $('select[name="rolename"]').each(function() {
+                   const $select = $(this);
+                   $select.empty();
+                   roles.forEach(role => {
+                        $select.append(`<option value="${role.name}">${role.name.replace('ROLE_', '')}</option>`);
+                   });
+               });
+           });
+   }
+
+   function loadUser() {
+       fetch('/api/user')
+           .then(response => response.json())
+           .then(user => {
+               const $tbody = $('#userBody');
+               $tbody.empty();
+               const roles = user.roles.map(r => r.name.replace('ROLE_', '')).join(', ');
+               $tbody.append(`
+                   <tr class="table-secondary border-top">
+                       <td>${user.id}</td>
+                       <td>${user.name}</td>
+                       <td>${user.lastName}</td>
+                       <td>${user.age}</td>
+                       <td>${user.username}</td>
+                       <td>${roles}</td>
+                   </tr>
+               `);
+           });
+   }
+
+   $(document).ready(function() {
+   loadRoles();
+   loadUser();
+});
+
+</script>
 </body>
 </html>

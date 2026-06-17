@@ -110,46 +110,91 @@
         </div>
         <div class="form-container d-flex justify-content-center align-items-center rounded-bottom" style="border: 1px solid #dee2e6; margin-left: 20px; margin-right: 20px">
             <div class="card-body w-100 bg-white text-center">
-        <form th:method="POST" th:action="@{/admin/new}" th:object="${newuser}">
+        <form id="addForm">
             <div>
             <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">First name </label>
-            <input type="text" th:field="*{name}" id="name" placeholder="First name" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
+            <input type="text" name="name" id="addName" placeholder="First name" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
             </div>
 
             <div>
             <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">Last name </label>
-            <input type="text" th:field="*{lastName}" id="lastname" placeholder="Last name" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
+            <input type="text" name="lastName" id="addLastName" placeholder="Last name" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
             </div>
 
             <div>
                 <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">Age </label>
-                <input type="text" th:field="*{age}" id="age"  placeholder="Age" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
+                <input type="text" name="age" id="addAge"  placeholder="Age" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto">
             </div>
 
             <div>
             <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">Email </label>
-            <input type="email" th:field="*{username}" id="username" placeholder="Email" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto" required>
+            <input type="email" name="username" id="addUsername" placeholder="Email" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto" required>
             </div>
 
             <div>
             <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">Password </label>
-            <input type="password" th:field="*{password}" id="password" placeholder="Password" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto" required>
+            <input type="password" name="password" id="addPassword" placeholder="Password" style="width: 350px; height: 30px; padding-left: 5px" class="form-control mx-auto" required>
             </div>
 
             <div>
             <label class="form-label d-block fw-bold mb-0" style="padding-top: 15px">Role </label>
-            <select name="rolename" multiple style="width: 350px; height: 45px; padding-left: 5px" class="form-control mx-auto">
-                <option th:each="role : ${allRoles}"
-                        th:value="${role.name}"
-                        th:text="${role.name.replace('ROLE_', '')}">
-                </option>
+            <select name="rolename" multiple id="addRoles" style="width: 350px; height: 45px; padding-left: 5px" class="form-control mx-auto">
             </select>
             </div>
-            <input type="submit" class="btn btn-primary bg-success text-white special-add-btn" style="margin-top: 10px; margin-bottom: 20px; width: 200px; height: 35px; border: none" value="Add new user"/>
+            <input type="button" class="btn btn-primary bg-success text-white special-add-btn" id="addUserBtn" style="margin-top: 10px; margin-bottom: 20px; width: 200px; height: 35px; border: none" value="Add new user"/>
         </form>
         </div>
         </div>
     </div>
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    let allRoles = [];
+
+    function loadRoles() {
+        fetch('/api/roles')
+        .then(response => response.json())
+        .then(roles => {
+        allRoles = roles;
+        $('select[name="rolename"]').each(function() {
+                   const $select = $(this);
+                   $select.empty();
+                   roles.forEach(role => {
+                        $select.append(`<option value="${role.name}">${role.name.replace('ROLE_', '')}</option>`);
+                   });
+               });
+           });
+    }
+
+    $('#addUserBtn').click(function() {
+        const data = {
+            name: $('#addName').val(),
+            lastName: $('#addLastName').val(),
+            age: parseInt($('#addAge').val()) || 0,
+            username: $('#addUsername').val(),
+            password: $('#addPassword').val() || null,
+            roles: ($('#addRoles').val() || [])
+        };
+    fetch('/api/users/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(() => {
+            $('#addForm')[0].reset();
+            if (typeof loadUsers === 'function') {
+                loadUsers();
+            }
+            window.location.href = '/admin';
+        })
+    });
+
+    $(document).ready(function() {
+        loadRoles();
+    });
+
+</script>
 </html>
